@@ -8,9 +8,9 @@ import numpy as np
 import argparse
 
 chars = ' .,-*+~%oa#'
-nlevel = len(chars)  #Quantize the color into nlevel levels
-def map_char(x, nlevels):
+def map_char(x):
     '''Map color in a range to certain character'''
+    nlevels = len(chars)
     levels = np.linspace(0, 1, nlevels)
     for i,k in enumerate(levels):
         if x<=k:
@@ -23,7 +23,7 @@ def asciifier(im):
     ascii_im = np.chararray((width, height))
     for i in range(width):
         for j in range(height):
-            ascii_im[i][j] = map_char(im[i][j], nlevel)
+            ascii_im[i][j] = map_char(im[i][j])
     return ascii_im
 
 def stringify(ascii_im):
@@ -33,6 +33,10 @@ def stringify(ascii_im):
     for i in range(width):
         for j in range(height):
             ascii_str += str(ascii_im[i][j])[2:-1]
+            #numpy character array strips whitespace. Therefore, we have to
+            #add it seperately
+            if ascii_im[i][j]=='':
+                ascii_str += ' '
         ascii_str += '\n'
     return ascii_str
 
@@ -44,7 +48,8 @@ if __name__ == '__main__':
     parser.add_argument('-p', action='store_true', help='Print ascii art on command line')
     parser.add_argument('-i', action='store_true', help='invert colour')
     parser.add_argument('-e', action='store_true', help='draw edges only')
-
+    parser.add_argument('-b', action='store_true',
+           help='make the range of values for which a whitespace is printed larger')
     args = parser.parse_args()
     img = io.imread(args.image, as_gray=True)
 
@@ -57,6 +62,10 @@ if __name__ == '__main__':
     if args.e:
         #Draw the image edges only
         img = ed.sobel(img)
+    if args.b:
+        #Prepend chars with another white space which
+        #effectively doubled the range of value for which whitespace is substituted
+        chars = ' '+chars
     im = asciifier(img)
     ascii_str = stringify(im)
     if args.dest:
