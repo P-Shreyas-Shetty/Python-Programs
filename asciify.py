@@ -3,6 +3,7 @@ Turns an image into ascii art
 '''
 import skimage.io as io
 import skimage.transform as itfm
+import skimage.filters.edges as ed
 import numpy as np
 import argparse
 
