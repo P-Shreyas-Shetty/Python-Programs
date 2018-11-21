@@ -33,18 +33,17 @@ def stringify(ascii_im):
     for i in range(width):
         for j in range(height):
             ascii_str += str(ascii_im[i][j])[2:-1]
-            #numpy character array strips whitespace. Therefore, we have to
-            #add it seperately
             if ascii_im[i][j]=='':
                 ascii_str += ' '
         ascii_str += '\n'
     return ascii_str
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Turn an image into ascii art')
+    parser = argparse.ArgumentParser(description='turn an image into ascii art')
     parser.add_argument('--image', type=str, help='image to be turned into ascii art' )
-    parser.add_argument('--dest', type=str, help='Destination text file')
-    parser.add_argument('--scale', type=float, help='Factor by which image is to be scaled down')
+    parser.add_argument('--dest', type=str, help='destination text file')
+    parser.add_argument('--scale', type=float, help='factor by which image is to be scaled down')
+    parser.add_argument('--chars', type=str, help='use your own set of characters')
     parser.add_argument('-p', action='store_true', help='Print ascii art on command line')
     parser.add_argument('-i', action='store_true', help='invert colour')
     parser.add_argument('-e', action='store_true', help='draw edges only')
@@ -52,7 +51,8 @@ if __name__ == '__main__':
            help='make the range of values for which a whitespace is printed larger')
     args = parser.parse_args()
     img = io.imread(args.image, as_gray=True)
-
+    if args.chars:
+        chars = args.chars
     if args.i:
         #Invert colors
         img = 1-img
