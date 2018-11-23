@@ -1,3 +1,4 @@
+#!~/anaconda3/bin/
 '''
 Turns an image into ascii art
 '''
@@ -7,7 +8,10 @@ import skimage.filters.edges as ed
 import numpy as np
 import argparse
 
-chars = ' .,-*+~%oa#'
+
+chars = '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`\'. '#70 shades of gray XD
+#chars = ' .:-=+*#%@' #lesser levels
+
 def map_char(x):
     '''Map color in a range to certain character'''
     nlevels = len(chars)
