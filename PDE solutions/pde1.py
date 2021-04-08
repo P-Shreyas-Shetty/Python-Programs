@@ -51,5 +51,5 @@ def update(*args):
     im.set_array(nxtstate())
     return im,
 ani = anim.FuncAnimation(fig, update, interval=50, blit=True)
-plt.show(1)
+plt.show()
 
